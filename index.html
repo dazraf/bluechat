@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Peer-to-peer chat over local network">
+  <title>BlueChat</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- Home Screen -->
+  <div id="screen-home" class="screen active">
+    <div class="screen-content centered">
+      <h1 class="app-title">BlueChat</h1>
+      <p class="subtitle">Peer-to-peer local chat</p>
+      <p class="device-id">Your ID: <strong id="device-id">...</strong></p>
+      <div class="button-group">
+        <button id="btn-new-chat" class="btn btn-primary">New Chat</button>
+        <button id="btn-join-chat" class="btn btn-secondary">Join Chat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Host Screen (New Chat) -->
+  <div id="screen-host" class="screen">
+    <div class="screen-content centered">
+      <h2>New Chat</h2>
+      <p class="instruction" id="host-instruction">Show this QR code to your peer</p>
+      <div id="host-qr-container" class="qr-container"></div>
+      <div id="host-scanner-container" class="scanner-container hidden"></div>
+
+      <!-- Debug: text paste for SDP exchange -->
+      <div id="host-debug" class="debug-panel hidden">
+        <label>Your Offer (copy this):</label>
+        <textarea id="host-offer-text" readonly rows="3"></textarea>
+        <label>Paste Answer:</label>
+        <textarea id="host-answer-text" rows="3" placeholder="Paste the answer SDP here..."></textarea>
+        <button id="host-accept-answer" class="btn btn-primary btn-small">Accept Answer</button>
+      </div>
+
+      <button id="btn-host-back" class="btn btn-text">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Join Screen -->
+  <div id="screen-join" class="screen">
+    <div class="screen-content centered">
+      <h2>Join Chat</h2>
+      <p class="instruction" id="join-instruction">Scan the host's QR code</p>
+      <div id="join-scanner-container" class="scanner-container"></div>
+      <div id="join-qr-container" class="qr-container hidden"></div>
+
+      <!-- Debug: text paste for SDP exchange -->
+      <div id="join-debug" class="debug-panel hidden">
+        <label>Paste Offer:</label>
+        <textarea id="join-offer-text" rows="3" placeholder="Paste the offer SDP here..."></textarea>
+        <button id="join-process-offer" class="btn btn-primary btn-small">Process Offer</button>
+        <label>Your Answer (copy this):</label>
+        <textarea id="join-answer-text" readonly rows="3"></textarea>
+      </div>
+
+      <button id="btn-join-back" class="btn btn-text">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Chat Screen -->
+  <div id="screen-chat" class="screen">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="peer-name" id="peer-name">Peer</span>
+      </div>
+      <button id="btn-leave" class="btn btn-text btn-small">Leave</button>
+    </div>
+    <div id="messages" class="messages"></div>
+    <form id="chat-form" class="chat-input-bar">
+      <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+      <button type="submit" class="btn btn-primary btn-send">Send</button>
+    </form>
+  </div>
+
+  <!-- Vendored libs -->
+  <script src="lib/lz-string.min.js"></script>
+  <script src="lib/qrcode.min.js"></script>
+  <script src="lib/html5-qrcode.min.js"></script>
+
+  <!-- App modules -->
+  <script src="js/identity.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/sdp-compress.js"></script>
+  <script src="js/transport.js"></script>
+  <script src="js/webrtc-transport.js"></script>
+  <script src="js/qr-manager.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
