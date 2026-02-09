@@ -156,8 +156,23 @@ var BlueChat;
             console.error(err);
         });
     }
+    // --- Theme ---
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+        else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('bluechat-theme', theme);
+        document.getElementById('btn-theme').textContent = theme === 'dark' ? '\u2600' : '\u263E';
+        document.querySelector('meta[name="theme-color"]')
+            .setAttribute('content', theme === 'dark' ? '#121212' : '#ffffff');
+    }
     // --- Init ---
     function init() {
+        // Apply saved theme (default: dark)
+        applyTheme(localStorage.getItem('bluechat-theme') || 'dark');
         deviceId = BlueChat.Identity.getOrCreate();
         document.getElementById('device-id').textContent = deviceId;
         BlueChat.Chat.init();
@@ -216,6 +231,11 @@ var BlueChat;
             const text = document.getElementById('join-offer-text').value.trim();
             if (text)
                 processOffer(text);
+        });
+        // Theme toggle
+        document.getElementById('btn-theme').addEventListener('click', () => {
+            const current = localStorage.getItem('bluechat-theme') || 'dark';
+            applyTheme(current === 'dark' ? 'light' : 'dark');
         });
         // Service worker
         if ('serviceWorker' in navigator) {

@@ -181,9 +181,26 @@ namespace BlueChat {
     });
   }
 
+  // --- Theme ---
+
+  function applyTheme(theme: string): void {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('bluechat-theme', theme);
+    document.getElementById('btn-theme')!.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    document.querySelector('meta[name="theme-color"]')!
+      .setAttribute('content', theme === 'dark' ? '#121212' : '#ffffff');
+  }
+
   // --- Init ---
 
   function init(): void {
+    // Apply saved theme (default: dark)
+    applyTheme(localStorage.getItem('bluechat-theme') || 'dark');
+
     deviceId = Identity.getOrCreate();
     document.getElementById('device-id')!.textContent = deviceId;
     Chat.init();
@@ -253,6 +270,12 @@ namespace BlueChat {
     document.getElementById('join-process-offer')!.addEventListener('click', () => {
       const text = (document.getElementById('join-offer-text') as HTMLTextAreaElement).value.trim();
       if (text) processOffer(text);
+    });
+
+    // Theme toggle
+    document.getElementById('btn-theme')!.addEventListener('click', () => {
+      const current = localStorage.getItem('bluechat-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
     });
 
     // Service worker
