@@ -4,6 +4,7 @@ var BlueChat;
     let transport = null;
     let deviceId = '';
     let peerId = '';
+    let hasConnectedOnce = false;
     const isDebug = window.location.search.indexOf('debug=true') !== -1;
     // Expose transport for debugging (used by test-debug-flow.js)
     BlueChat._transport = null;
@@ -14,19 +15,37 @@ var BlueChat;
             transport = null;
             BlueChat._transport = null;
         }
+        hasConnectedOnce = false;
     }
     function setupTransport() {
         BlueChat._transport = transport;
         transport.on('connected', () => {
-            BlueChat.Screens.show('chat');
-            BlueChat.Chat.clear();
             const name = peerId || 'Peer';
-            document.getElementById('peer-name').textContent = name;
-            document.getElementById('status-dot').classList.remove('disconnected');
-            BlueChat.Chat.addMessage('Connected to ' + name, 'system');
+            const dot = document.getElementById('status-dot');
+            dot.classList.remove('disconnected', 'reconnecting');
+            document.getElementById('btn-reconnect').classList.add('hidden');
+            if (!hasConnectedOnce) {
+                hasConnectedOnce = true;
+                BlueChat.Screens.show('chat');
+                BlueChat.Chat.clear();
+                document.getElementById('peer-name').textContent = name;
+                BlueChat.Chat.addMessage('Connected to ' + name, 'system');
+            }
+            else {
+                BlueChat.Chat.addMessage('Connection restored', 'system');
+            }
+        });
+        transport.on('reconnecting', () => {
+            const dot = document.getElementById('status-dot');
+            dot.classList.remove('disconnected');
+            dot.classList.add('reconnecting');
+            BlueChat.Chat.addMessage('Connection unstable, attempting to recover...', 'system');
         });
         transport.on('disconnected', () => {
-            document.getElementById('status-dot').classList.add('disconnected');
+            const dot = document.getElementById('status-dot');
+            dot.classList.remove('reconnecting');
+            dot.classList.add('disconnected');
+            document.getElementById('btn-reconnect').classList.remove('hidden');
             BlueChat.Chat.addMessage('Peer disconnected', 'system');
         });
         transport.on('message', (data) => {
@@ -162,6 +181,23 @@ var BlueChat;
         document.getElementById('btn-leave').addEventListener('click', () => {
             cleanup();
             BlueChat.Screens.show('home');
+        });
+        // Reconnect button
+        document.getElementById('btn-reconnect').addEventListener('click', async () => {
+            if (!transport || !transport.attemptReconnect) {
+                BlueChat.Toast.show('Reconnection not available', true);
+                return;
+            }
+            const btn = document.getElementById('btn-reconnect');
+            btn.disabled = true;
+            btn.textContent = 'Reconnecting...';
+            const success = await transport.attemptReconnect();
+            btn.disabled = false;
+            btn.textContent = 'Reconnect';
+            if (!success) {
+                BlueChat.Toast.show('Cannot reconnect — connection fully lost. Start a new chat.', true);
+                btn.classList.add('hidden');
+            }
         });
         // Chat form
         document.getElementById('chat-form').addEventListener('submit', (e) => {
