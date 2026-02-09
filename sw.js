@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bluechat-v4';
+const CACHE_NAME = 'bluechat-v5';
 const ASSETS = [
   './',
   './index.html',
