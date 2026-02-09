@@ -36,6 +36,7 @@
       <p class="instruction" id="host-instruction">Show this QR code to your peer</p>
       <div id="host-qr-container" class="qr-container"></div>
       <div id="host-scanner-container" class="scanner-container hidden"></div>
+      <button id="btn-scan-answer" class="btn btn-primary hidden">Scan Answer QR</button>
 
       <!-- Debug: text paste for SDP exchange -->
       <div id="host-debug" class="debug-panel hidden">
@@ -93,8 +94,10 @@
   <script src="lib/html5-qrcode.min.js"></script>
 
   <!-- App modules -->
+  <script src="js/types.js"></script>
   <script src="js/identity.js"></script>
   <script src="js/screens.js"></script>
+  <script src="js/toast.js"></script>
   <script src="js/sdp-compress.js"></script>
   <script src="js/transport.js"></script>
   <script src="js/webrtc-transport.js"></script>

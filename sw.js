@@ -1,10 +1,12 @@
-const CACHE_NAME = 'bluechat-v2';
+const CACHE_NAME = 'bluechat-v3';
 const ASSETS = [
   './',
   './index.html',
   './css/style.css',
+  './js/types.js',
   './js/identity.js',
   './js/screens.js',
+  './js/toast.js',
   './js/sdp-compress.js',
   './js/transport.js',
   './js/webrtc-transport.js',
