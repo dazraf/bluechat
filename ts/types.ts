@@ -22,6 +22,7 @@ namespace BlueChat {
   export interface TransportEventMap {
     connected: void;
     disconnected: void;
+    reconnecting: void;
     message: string;
   }
 
@@ -36,6 +37,7 @@ namespace BlueChat {
     completeHandshake(responseData: string): Promise<void>;
     send(message: string): void;
     disconnect(): void;
+    attemptReconnect?(): Promise<boolean>;
     on<K extends keyof TransportEventMap>(
       event: K,
       fn: (data: TransportEventMap[K]) => void
