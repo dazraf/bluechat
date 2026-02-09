@@ -1,33 +1,28 @@
-(function () {
-  'use strict';
-
-  var SCREENS = ['home', 'host', 'join', 'chat'];
-  var current = 'home';
-  var listeners = [];
-
-  function show(name) {
-    if (SCREENS.indexOf(name) === -1) return;
-    var prev = current;
-    current = name;
-    SCREENS.forEach(function (s) {
-      var el = document.getElementById('screen-' + s);
-      if (el) el.classList.toggle('active', s === name);
-    });
-    listeners.forEach(function (fn) { fn(name, prev); });
-  }
-
-  function getCurrent() {
-    return current;
-  }
-
-  function onChange(fn) {
-    listeners.push(fn);
-  }
-
-  window.BlueChat = window.BlueChat || {};
-  window.BlueChat.Screens = {
-    show: show,
-    getCurrent: getCurrent,
-    onChange: onChange
-  };
-})();
+"use strict";
+var BlueChat;
+(function (BlueChat) {
+    const SCREENS = ['home', 'host', 'join', 'chat'];
+    let current = 'home';
+    const listeners = [];
+    BlueChat.Screens = {
+        show(name) {
+            if (SCREENS.indexOf(name) === -1)
+                return;
+            const prev = current;
+            current = name;
+            SCREENS.forEach(s => {
+                const el = document.getElementById('screen-' + s);
+                if (el)
+                    el.classList.toggle('active', s === name);
+            });
+            listeners.forEach(fn => fn(name, prev));
+        },
+        getCurrent() {
+            return current;
+        },
+        onChange(fn) {
+            listeners.push(fn);
+        }
+    };
+})(BlueChat || (BlueChat = {}));
+//# sourceMappingURL=screens.js.map

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "node test-debug-flow.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.37.2",
+    "typescript": "^5.7"
+  }
+}

@@ -158,6 +158,10 @@ h2 {
   overflow: hidden;
 }
 
+#btn-scan-answer {
+  margin-top: 16px;
+}
+
 /* Chat layout */
 #screen-chat {
   display: none;

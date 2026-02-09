@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "None",
+    "outDir": "js",
+    "rootDir": "ts",
+    "strict": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "lib": ["ES2017", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true
+  },
+  "include": ["ts/**/*.ts", "lib/types/*.d.ts"]
+}
